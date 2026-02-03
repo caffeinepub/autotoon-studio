@@ -1,0 +1,88 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-replace-the-current-invalid-tiny-placeholder-mp4-with-a-new-valid-good-looking-horizontal-mp4-asset-that-features-multiple-original-cartoon-characters-2-3-and-visible-character-motion-e-g-walk-gesture-loops-in-a-simple-cartoon-forest-style-scene-inspired-by-the-uploaded-screenshot-but-not-copied-the-mp4-must-be-large-enough-to-pass-existing-placeholder-validation-and-must-play-reliably-in-the-in-app-player",
+      "featureTitle": "Replace the current invalid/tiny placeholder MP4 with a new valid, good-looking horizontal MP4 asset that features multiple original cartoon characters (2–3+) and visible character motion (e.g., walk/gesture loops) in a simple cartoon forest-style scene (inspired by the uploaded screenshot but not copied). The MP4 must be large enough to pass existing placeholder validation and must play reliably in the in-app player.",
+      "files": [
+        "frontend/src/utils/placeholderVideo.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "authorization@4.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-gallery-and-modal-video-player-consistently-use-the-same-playable-mp4-bytes-source-backend-served-bytes-when-available-otherwise-the-new-placeholder-mp4-and-that-the-download-action-downloads-a-real-playable-mp4-file-that-also-opens-in-standard-phone-desktop-gallery-players",
+      "featureTitle": "Ensure the gallery and modal video player consistently use the same playable MP4 bytes source (backend-served bytes when available; otherwise the new placeholder MP4) and that the Download action downloads a real playable .mp4 file that also opens in standard phone/desktop gallery players.",
+      "files": [
+        "frontend/src/components/VideoPlayer.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "authorization@4.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-more-cartoon-appropriate-default-gallery-thumbnail-static-image-that-matches-the-new-multi-character-cartoon-style-and-use-it-wherever-the-gallery-currently-falls-back-to-a-generic-default-thumbnail",
+      "featureTitle": "Add a more cartoon-appropriate default gallery thumbnail (static image) that matches the new multi-character cartoon style and use it wherever the gallery currently falls back to a generic/default thumbnail.",
+      "files": [
+        "frontend/src/components/VideoGallery.tsx",
+        "frontend/src/components/VideoPlayer.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "authorization@4.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-use-english-for-any-new-or-updated-user-facing-text-related-to-video-playback-download-placeholder-status-so-the-ui-messages-are-consistent-and-understandable",
+      "featureTitle": "Use English for any new or updated user-facing text related to video playback/download/placeholder status so the UI messages are consistent and understandable.",
+      "files": [
+        "frontend/src/components/UploadSection.tsx",
+        "frontend/src/components/VideoGallery.tsx",
+        "frontend/src/components/VideoPlayer.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "authorization@4.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

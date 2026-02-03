@@ -1,0 +1,103 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Upgrade placeholder video + consistent playback/download sources and cartoon thumbnail",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Replace the placeholder MP4 with a valid, larger horizontal cartoon multi-character MP4 that plays reliably in-app.",
+      "acceptanceCriteria": [
+        "A new placeholder MP4 exists under frontend/public/assets/placeholders/ and is a valid playable MP4 file (not a tiny/invalid file).",
+        "The app uses the new placeholder MP4 for placeholder creation/playback without throwing validation errors.",
+        "The placeholder video plays in the modal player without immediate failure/black flash."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/placeholders/minimal-placeholder.mp4",
+          "operation": "modify",
+          "description": "Replace the current placeholder with a new original, good-looking horizontal MP4 featuring 2–3+ original cartoon characters with visible motion in a simple forest-style scene (inspired by the screenshot but not copied). Ensure the file is a valid MP4 and sufficiently large to pass existing placeholder validation."
+        },
+        {
+          "path": "frontend/src/utils/placeholderVideo.ts",
+          "operation": "modify",
+          "description": "Keep placeholder loading/validation aligned with the new MP4 (ensure the fetch path remains correct and validation errors remain actionable for placeholder failures)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Unify playback and download so they use the same playable MP4 source (backend-served when available, otherwise the new placeholder) and ensure downloads are valid .mp4 files.",
+      "acceptanceCriteria": [
+        "Clicking Download on a video results in a valid .mp4 file that plays in external players.",
+        "The downloaded filename ends with .mp4 and is not a zero/near-zero byte file.",
+        "If the backend returns video bytes for a file, the player uses those bytes; if not, the player uses the new placeholder MP4 without errors."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/VideoPlayer.tsx",
+          "operation": "modify",
+          "description": "Refactor playback source resolution to consistently choose a single playable MP4 source for both the modal player and Download: prefer backend-served video when available (use blob-storage ExternalBlob capabilities such as direct URL streaming and/or bytes), otherwise fall back to the static placeholder MP4. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/VideoPlayer.tsx",
+          "operation": "modify",
+          "description": "Update Download to always download real playable MP4 bytes for the same chosen source (backend-served when available; otherwise placeholder), ensuring a .mp4 filename and non-trivial byte size; avoid generating downloads from broken/empty data."
+        },
+        {
+          "path": "frontend/src/components/VideoPlayer.tsx",
+          "operation": "modify",
+          "description": "Improve error handling so that if backend video retrieval fails or returns invalid bytes, the UI automatically falls back to the static placeholder MP4 for playback (and download) instead of hard-failing, while keeping user-facing messaging in English."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add and use a cartoon-appropriate default thumbnail that matches the new multi-character style wherever the gallery falls back to a default thumbnail.",
+      "acceptanceCriteria": [
+        "The video gallery shows the new cartoon-style thumbnail for items without an available generated thumbnail.",
+        "The thumbnail is served as a static asset from frontend/public/assets/generated (not via backend)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png",
+          "operation": "create",
+          "description": "Add the required static cartoon forest scene thumbnail image (2–3 original characters visible) named exactly: frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png."
+        },
+        {
+          "path": "frontend/src/components/VideoGallery.tsx",
+          "operation": "modify",
+          "description": "Update gallery thumbnail fallback logic to use frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png wherever the UI currently falls back to a generic/default thumbnail."
+        },
+        {
+          "path": "frontend/src/components/VideoPlayer.tsx",
+          "operation": "modify",
+          "description": "Update the modal player error/empty visual fallback thumbnail to use frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png for a consistent cartoon style."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Ensure any new or updated user-facing text related to video playback/download/placeholder status is in English.",
+      "acceptanceCriteria": [
+        "Any newly added/modified UI copy in the affected flows appears in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/VideoPlayer.tsx",
+          "operation": "modify",
+          "description": "Ensure any updated/added playback and download status/error text is in English (loading states, playback failure messages, download success/failure toasts)."
+        },
+        {
+          "path": "frontend/src/components/UploadSection.tsx",
+          "operation": "modify",
+          "description": "Convert placeholder-creation related user-facing text/toasts used during video creation to English (especially messages referencing placeholder creation, processing, retry guidance)."
+        },
+        {
+          "path": "frontend/src/components/VideoGallery.tsx",
+          "operation": "modify",
+          "description": "Convert video playback-related gallery UI text that is part of the affected flow to English (e.g., statuses and retry feedback that relate to video availability/playability)."
+        }
+      ]
+    }
+  ]
+}

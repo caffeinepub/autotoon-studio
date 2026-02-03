@@ -1,0 +1,308 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 43,
+  "summary": "AutoToon Studio continues with the practical interim goal: consistently generate a real, good-quality horizontal MP4 that plays in-app, appears in the gallery, is downloadable, and matches the uploaded audio duration (5–10 minutes / exactly audio length). User confirmed they want the best-feasible character-based animation within current limits: multiple original cartoon characters, maximum realistic movement/gestures, and audio-driven pseudo lip-sync (not true story understanding/lip-sync yet), using a single user-uploaded audio file.",
+  "existing_features": [
+    {
+      "id": "IF-1",
+      "title": "Internet Identity authentication (login, logout, persistence)",
+      "synonyms": [
+        "II auth",
+        "AuthClient integration"
+      ],
+      "description": "Provides an `InternetIdentityProvider` that initializes AuthClient, loads a saved identity on mount, supports login via Internet Identity with a 30-day max TTL delegation, and logout via `clear()`; exposes status flags (initializing/logging-in/success/error).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-2",
+      "title": "Backend actor creation bound to identity",
+      "synonyms": [
+        "Authenticated actor",
+        "Anonymous actor fallback"
+      ],
+      "description": "Implements `useActor` to create an anonymous canister actor when not logged in and an identity-bound actor when authenticated; invalidates and refetches dependent React Query queries whenever the actor/identity changes.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-3",
+      "title": "User files listing with processing-aware polling",
+      "synonyms": [
+        "My files query",
+        "Auto refresh while processing"
+      ],
+      "description": "Implements `useUserFiles` React Query hook keyed by principal; fetches `getUserFiles(principal)` and automatically polls every 3 seconds when any returned file has status `processing`.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-4",
+      "title": "File upload mutation (audio/video)",
+      "synonyms": [
+        "uploadFile",
+        "ExternalBlob upload"
+      ],
+      "description": "Implements `useUploadFile` mutation that calls backend `uploadFile(fileId, fileType, blob)` and invalidates the `userFiles` query on success; supports audio and video file types using an `ExternalBlob` wrapper.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-5",
+      "title": "File status update mutation",
+      "synonyms": [
+        "updateFileStatus",
+        "processing/completed/failed"
+      ],
+      "description": "Implements `useUpdateFileStatus` mutation to set backend file status (processing/completed/failed) and invalidate `userFiles` after updates.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-6",
+      "title": "Single file retrieval query",
+      "synonyms": [
+        "getFile hook",
+        "file details fetch"
+      ],
+      "description": "Implements `useGetFile(fileId)` React Query hook to fetch a single file record via backend `getFile(fileId)` when an actor and fileId are available.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-7",
+      "title": "Dashboard with auth-gated UX (hero vs. app)",
+      "synonyms": [
+        "Landing page gating",
+        "Logged-out hero"
+      ],
+      "description": "Shows a marketing hero section and login CTA when unauthenticated; shows the main app (upload + video gallery) when authenticated; displays spinners during identity initialization and file loading.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-8",
+      "title": "Audio upload UI with drag-and-drop, validation, and generation simulation",
+      "synonyms": [
+        "UploadSection",
+        "Simulated AI pipeline"
+      ],
+      "description": "Supports drag-and-drop or file picker for MP3/WAV, validates non-empty size and max 50MB, uploads audio to backend, attempts to create an empty placeholder video entry, and simulates multi-step AI processing with progressive percent updates; marks the video as completed/failed via `updateFileStatus` and offers retry on failure.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-9",
+      "title": "Generation progress and error display",
+      "synonyms": [
+        "Progress card",
+        "Retry alert"
+      ],
+      "description": "Renders animated progress state with current step label and percentage, and a destructive error alert state with optional retry button for failed generations.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-10",
+      "title": "Video gallery with status badges, fallback thumbnails, and retry for failed videos",
+      "synonyms": [
+        "Video list",
+        "Processing/failed UI"
+      ],
+      "description": "Displays the user’s video files in a responsive grid; shows badges for completed/processing/failed, uses a spinner/placeholder visuals while processing, shows fallback thumbnail imagery, and provides a retry flow for failed videos that simulates regeneration and updates backend status accordingly.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-11",
+      "title": "Modal video player with playback, download, and regeneration actions (simulated)",
+      "synonyms": [
+        "VideoPlayer dialog",
+        "Download MP4"
+      ],
+      "description": "Opens a dialog to play a selected video using `blob.getDirectURL()`, handles playback errors with a fallback thumbnail message, supports downloading via an anchor link, and includes simulated regeneration actions for characters/backgrounds with toasts and loading states.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-12",
+      "title": "Motoko backend file registry (upload, list, get, status updates)",
+      "synonyms": [
+        "Canister API",
+        "File metadata store"
+      ],
+      "description": "Implements core canister methods: `uploadFile` (creates a File record with status processing and stores it in Maps plus per-user file list), `updateFileStatus` (updates status and sets completionTime when completed), `getUserFiles` (returns files associated with a principal), and `getFile` (returns a file by id).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-13",
+      "title": "Caffeine blob-storage mixin utilities (authorization, pruning, cycle refill)",
+      "synonyms": [
+        "Storage mixin",
+        "Dead blob GC support"
+      ],
+      "description": "Includes storage support functions: fetch cashier principal from env var, update authorized gateway principals from cashier canister, check authorization for blob deletion workflows, list dead blobs, confirm deletion and trigger GC, and a cashier-only cycle refill endpoint.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-14",
+      "title": "App shell with theming, header/footer, and notifications",
+      "synonyms": [
+        "ThemeProvider",
+        "Layout"
+      ],
+      "description": "Wraps the app in next-themes ThemeProvider, renders header with branding and login/logout controls, footer with attribution and GitHub link, and a global toaster for user feedback.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-15",
+      "title": "Backend access control enforcement for file APIs",
+      "synonyms": [
+        "Caller ownership checks",
+        "Authorization guardrails"
+      ],
+      "description": "Adds/uses an authorization/access-control layer in the Motoko backend so that user-scoped APIs enforce caller permissions (e.g., only the owner can list their files, fetch private file records, or update a file’s processing status), reducing privacy leaks and preventing unauthorized status changes.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-16",
+      "title": "Playable placeholder MP4 generation and correct video blob serving for in-app playback/download",
+      "synonyms": [
+        "Valid MP4 placeholder",
+        "Playback/download fix",
+        "Correct MIME for video"
+      ],
+      "description": "Replaces the prior near-empty (~85B) placeholder video artifact with a valid minimal MP4 payload and updates the upload/serving path so video blobs are stored and retrieved with appropriate metadata/URLs for browser playback and direct download.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-invalid-tiny-placeholder-mp4-with-a-new-valid-good-looking-horizontal-mp4-asset-that-features-multiple-original-cartoon-characters-2-3-and-visible-character-motion-e-g-walk-gesture-loops-in-a-simple-cartoon-forest-style-scene-inspired-by-the-uploaded-screenshot-but-not-copied-the-mp4-must-be-large-enough-to-pass-existing-placeholder-validation-and-must-play-reliably-in-the-in-app-player",
+      "title": "Replace the current invalid/tiny placeholder MP4 with a new valid, good-looking horizontal MP4 asset that features multiple original cartoon characters (2–3+) and visible character motion (e.g., walk/gesture loops) in a simple cartoon forest-style scene (inspired by the uploaded screenshot but not copied). The MP4 must be large enough to pass existing placeholder validation and must play reliably in the in-app player.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-gallery-and-modal-video-player-consistently-use-the-same-playable-mp4-bytes-source-backend-served-bytes-when-available-otherwise-the-new-placeholder-mp4-and-that-the-download-action-downloads-a-real-playable-mp4-file-that-also-opens-in-standard-phone-desktop-gallery-players",
+      "title": "Ensure the gallery and modal video player consistently use the same playable MP4 bytes source (backend-served bytes when available; otherwise the new placeholder MP4) and that the Download action downloads a real playable .mp4 file that also opens in standard phone/desktop gallery players.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-more-cartoon-appropriate-default-gallery-thumbnail-static-image-that-matches-the-new-multi-character-cartoon-style-and-use-it-wherever-the-gallery-currently-falls-back-to-a-generic-default-thumbnail",
+      "title": "Add a more cartoon-appropriate default gallery thumbnail (static image) that matches the new multi-character cartoon style and use it wherever the gallery currently falls back to a generic/default thumbnail.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-use-english-for-any-new-or-updated-user-facing-text-related-to-video-playback-download-placeholder-status-so-the-ui-messages-are-consistent-and-understandable",
+      "title": "Use English for any new or updated user-facing text related to video playback/download/placeholder status so the UI messages are consistent and understandable.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Replace invalid 85-byte placeholder MP4 with a real >=1024B MP4 and ensure video blobs are served with correct video/mp4 headers/streaming so in-app playback works",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Provide a real, good-looking demo/placeholder MP4 (not tiny/invalid) that is downloadable and also displays correctly in the gallery as the video output until true generation is implemented",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Produce a clean horizontal MP4 output that is downloadable and shown in the gallery, with duration matching the uploaded audio length (target 5–10 minutes or same as audio) instead of a short demo placeholder",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Implement real audio-synced cartoon animation output (not just placeholder): video length must match audio duration and animation should align with narration timing",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add scene-based story understanding and generation: detect scenes/characters/backgrounds and render full cartoon animation with character speaking/acting (lip-sync/voice-driven animation) when dialogue is present",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Implement an interim real MP4 output pipeline that always produces a valid, good-looking horizontal animation video with duration matching the uploaded audio (mux audio + loop/scene animation), playable in-app, downloadable, and visible in the gallery",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Interim animation output should support multiple characters (as feasible) within the audio-length-matched horizontal MP4 pipeline (playable in-app, downloadable, shown in gallery)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "architecturalNotes": [
+    "Frontend is a React SPA using @tanstack/react-query for server-state caching, mutations, and automatic refetch (polling when files are in processing state).",
+    "Authentication is handled via a React Context provider wrapping @dfinity/auth-client (Internet Identity) and exposes login/logout plus identity state.",
+    "Canister interaction is abstracted behind a custom `useActor` hook that creates an anonymous or authenticated actor and invalidates/refetches non-actor queries when identity changes.",
+    "UI is built with TailwindCSS plus shadcn/ui-style components, next-themes for dark/light mode switching, and sonner for toast notifications.",
+    "Backend is a Motoko actor maintaining in-memory Maps for `files` (fileId -> File record) and `users` (principal -> list of fileIds), with a migration hook scaffolded via `migration.mo`.",
+    "Blob storage utilities are mixed into the backend actor via `include MixinStorage()`; authorization for deletion/GW operations is maintained in transient state fetched from a cashier canister environment variable.",
+    "Backend now includes a dedicated authorization/access-control module (via `backend/authorization/*`) integrated into the main actor to enforce caller/ownership checks for file-related methods.",
+    "Repository now includes a `build-template/` scaffold (React/Vite + pnpm workspace) with helper scripts (e.g., prune-unused-images, resize-images) and bundled shadcn/ui component sources for reuse/standardization across builds.",
+    "Frontend linting/tooling now includes custom ESLint rules (e.g., enforcing use of the InternetIdentity provider and avoiding BigInt in React Query keys) as part of the build-template/frontend configuration.",
+    "Prefer targeted, minimal-scope fixes to the specific failing area (e.g., upload, placeholder creation, playback) rather than broad project-wide code restructures, to avoid regressions like 'Actor not initialized'.",
+    "Frontend now includes a dedicated placeholder-video utility for generating a minimal valid MP4 payload (instead of uploading empty/near-empty blobs) so the simulated generation pipeline produces playable artifacts.",
+    "Storage client/upload path is aligned to preserve correct video MIME/type expectations for browser playback and download behavior.",
+    "User confirmed they prefer whatever approach is best as long as the output video is a good-quality MP4 that can be downloaded and also appears in the gallery (i.e., use a real demo/placeholder MP4 rather than disabling playback).",
+    "User requirements for demo/output video: horizontal orientation, clean animation (no overlay text), and video duration should match the uploaded audio length (they indicated 5–10 minutes / same as audio).",
+    "User clarified desired output is not a generic loop/placeholder: they want full cartoon animation with scene-based characters/backgrounds and audio-synced acting/lip-sync when character dialogue is present; final MP4 duration must match the uploaded audio length.",
+    "User accepted proceeding with the best feasible interim approach (not full AI scene/lip-sync yet): generate a real valid MP4 (not 85B), horizontal, clean animation, duration exactly equals uploaded audio length, and ensure it plays in-app and is downloadable/visible in gallery; keep architecture extensible for later external AI scene/lip-sync rendering integration.",
+    "User confirmed interim animation approach details: (1) prioritize as-realistic-as-possible character movement/gestures within feasibility (not true AI scene/lip-sync), (2) audio source will be a single user-uploaded MP3/WAV file, (3) use generic original/royalty-free-looking cartoon characters & backgrounds (inspired-by style, not copied).",
+    "User confirmed to proceed with the best-feasible interim animation approach (not true story understanding / YouTube-level scene generation yet): generate a real horizontal MP4 with duration exactly matching the uploaded audio, clean animation, downloadable and visible in gallery, with multiple characters and as-realistic-as-possible movement plus audio-driven pseudo lip-sync."
+  ],
+  "knownIssues": [
+    "`uploadFile` uses a global `fileId` key; collisions can overwrite existing entries (no uniqueness/ownership checks).",
+    "Video thumbnails are not derived from actual video content; the gallery uses a static default thumbnail and simple fallback handling.",
+    "There appear to be two different `frontend/src/index.css` contents in the provided tree, suggesting a possible merge/duplication issue that could cause styling inconsistencies depending on which file is actually used.",
+    "`_caffeineStorageCreateCertificate` in the storage mixin returns a fixed `{method=\"upload\"}` response and does not implement real certificate issuance/verification logic (may be intentional stub).",
+    "Regression observed: audio upload can fail with a popup error \"Actor not initialized\" after broader code changes/builds.",
+    "Build/runtime error: placeholder video asset `assets/placeholders/minimal-placeholder.mp4` is invalid/too small (85 bytes). System requires a valid MP4 placeholder of at least 1024 bytes; must replace with a real MP4 file to allow placeholder creation/playback.",
+    "Upload can fail with “YHash must be exactly 32 bytes, got 64” / “अपलोड के दौरान अमान्य फ़ाइल हैश का पता चला” especially with ElevenLabs-downloaded MP3s, indicating a hash encoding/normalization mismatch (e.g., 64-char hex vs required 32-byte binary).",
+    "After upload reaches 100% (and/or after “Audio ke sath sink…”), the UI can show “फ़ाइल नहीं मिली”, suggesting the uploaded file record/blob reference is not being persisted or is being looked up under a mismatched fileId/registry key."
+  ],
+  "isFixRequest": true,
+  "imageRequirements": "## Required Images\n- Cartoon forest scene thumbnail with 2–3 original characters visible (cartoon-gallery-thumb.dim_1280x720.png)",
+  "generatedImages": [
+    {
+      "filename": "cartoon-gallery-thumb.dim_1280x720.png",
+      "description": "Cartoon forest scene thumbnail with 2–3 original characters visible",
+      "targetWidth": 1280,
+      "targetHeight": 720
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "AutoToon Studio",
+  "clarification_mode": "thinking",
+  "clarification_rounds": 0,
+  "requiresBackendChanges": true,
+  "requiresFrontendChanges": true
+}

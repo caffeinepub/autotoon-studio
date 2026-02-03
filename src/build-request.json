@@ -1,0 +1,94 @@
+{
+  "kind": "build_request",
+  "title": "Upgrade placeholder output to a cartoon-style multi-character MP4 (valid playback + download)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Replace the current invalid/tiny placeholder MP4 with a new valid, good-looking horizontal MP4 asset that features multiple original cartoon characters (2–3+) and visible character motion (e.g., walk/gesture loops) in a simple cartoon forest-style scene (inspired by the uploaded screenshot but not copied). The MP4 must be large enough to pass existing placeholder validation and must play reliably in the in-app player.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "multiple carecter",
+          "jitna achha ho paye itna karo"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new placeholder MP4 exists under frontend/public/assets/placeholders/ and is a valid playable MP4 file (not a tiny/invalid file).",
+        "The app uses the new placeholder MP4 for placeholder creation/playback without throwing validation errors.",
+        "The placeholder video plays in the modal player without immediate failure/black flash."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Ensure the gallery and modal video player consistently use the same playable MP4 bytes source (backend-served bytes when available; otherwise the new placeholder MP4) and that the Download action downloads a real playable .mp4 file that also opens in standard phone/desktop gallery players.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "dawnload honi chiye jo gallery me bhi dikhe"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking Download on a video results in a valid .mp4 file that plays in external players.",
+        "The downloaded filename ends with .mp4 and is not a zero/near-zero byte file.",
+        "If the backend returns video bytes for a file, the player uses those bytes; if not, the player uses the new placeholder MP4 without errors."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add a more cartoon-appropriate default gallery thumbnail (static image) that matches the new multi-character cartoon style and use it wherever the gallery currently falls back to a generic/default thumbnail.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "multiple carecter"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The video gallery shows the new cartoon-style thumbnail for items without an available generated thumbnail.",
+        "The thumbnail is served as a static asset from frontend/public/assets/generated (not via backend)."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Use English for any new or updated user-facing text related to video playback/download/placeholder status so the UI messages are consistent and understandable.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Use English for any user-facing text in the build request."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Any newly added/modified UI copy in the affected flows appears in English."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under frontend.immutablePaths (must compose existing UI components/hooks rather than modifying those sources).",
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo); add backend/migration.mo only if an upgrade requires it.",
+    "Do not use external AI services or third-party animation generation APIs; assets must be bundled as static files.",
+    "Do not copy the uploaded YouTube screenshot artwork; only create an original cartoon style inspired by it."
+  ],
+  "nonGoals": [
+    "True story understanding from audio (scene detection, narrative parsing).",
+    "True phoneme-accurate lip-sync or dialogue-aware acting.",
+    "Generating a unique 5–10 minute MP4 whose duration exactly matches each uploaded audio file (dynamic server-side rendering/encoding)."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Cartoon forest scene thumbnail with 2–3 original characters visible (cartoon-gallery-thumb.dim_1280x720.png)"
+    ],
+    "edits": []
+  }
+}
