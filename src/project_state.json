@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 43,
-  "summary": "AutoToon Studio continues with the practical interim goal: consistently generate a real, good-quality horizontal MP4 that plays in-app, appears in the gallery, is downloadable, and matches the uploaded audio duration (5–10 minutes / exactly audio length). User confirmed they want the best-feasible character-based animation within current limits: multiple original cartoon characters, maximum realistic movement/gestures, and audio-driven pseudo lip-sync (not true story understanding/lip-sync yet), using a single user-uploaded audio file.",
+  "projectStateVersion": 52,
+  "summary": "AutoToon Studio remains focused on an interim, best-feasible solution: reliably produce a real, good-quality horizontal MP4 that plays in-app, appears in the gallery, is downloadable, and matches the uploaded audio duration—while staying future-ready for true AI scene/character/lip-sync generation later. User additionally clarified they want support for multiple characters in the interim animation approach (as much as feasible).",
   "existing_features": [
     {
       "id": "IF-1",
@@ -183,45 +183,34 @@
       "version": 1
     },
     {
-      "id": "feature-replace-the-current-invalid-tiny-placeholder-mp4-with-a-new-valid-good-looking-horizontal-mp4-asset-that-features-multiple-original-cartoon-characters-2-3-and-visible-character-motion-e-g-walk-gesture-loops-in-a-simple-cartoon-forest-style-scene-inspired-by-the-uploaded-screenshot-but-not-copied-the-mp4-must-be-large-enough-to-pass-existing-placeholder-validation-and-must-play-reliably-in-the-in-app-player",
-      "title": "Replace the current invalid/tiny placeholder MP4 with a new valid, good-looking horizontal MP4 asset that features multiple original cartoon characters (2–3+) and visible character motion (e.g., walk/gesture loops) in a simple cartoon forest-style scene (inspired by the uploaded screenshot but not copied). The MP4 must be large enough to pass existing placeholder validation and must play reliably in the in-app player.",
+      "id": "IF-17",
+      "title": "Improved default gallery thumbnail asset",
+      "synonyms": [
+        "Generated gallery thumbnail",
+        "cartoon-gallery-thumb"
+      ],
+      "description": "Adds a higher-quality static thumbnail image asset used as the default/fallback thumbnail in the video gallery UI.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-audio-uploadsection-drag-and-drop-area-so-the-entire-dropzone-is-fully-clickable-tappable-on-both-mobile-and-desktop-to-open-the-file-picker-not-only-the-select-file-button-ensure-the-click-tap-triggers-the-underlying-input-type-file-reliably-on-mobile-chrome",
+      "title": "Update the audio UploadSection drag-and-drop area so the entire dropzone is fully clickable/tappable on both mobile and desktop to open the file picker (not only the \"Select File\" button). Ensure the click/tap triggers the underlying <input type=\"file\"> reliably on mobile Chrome.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-ensure-the-gallery-and-modal-video-player-consistently-use-the-same-playable-mp4-bytes-source-backend-served-bytes-when-available-otherwise-the-new-placeholder-mp4-and-that-the-download-action-downloads-a-real-playable-mp4-file-that-also-opens-in-standard-phone-desktop-gallery-players",
-      "title": "Ensure the gallery and modal video player consistently use the same playable MP4 bytes source (backend-served bytes when available; otherwise the new placeholder MP4) and that the Download action downloads a real playable .mp4 file that also opens in standard phone/desktop gallery players.",
+      "id": "feature-improve-the-upload-dropzone-hit-area-and-accessibility-show-a-clear-pointer-interactive-affordance-when-enabled-and-support-keyboard-activation-enter-space-for-the-dropzone-to-open-the-file-picker",
+      "title": "Improve the upload dropzone hit-area and accessibility: show a clear pointer/interactive affordance when enabled, and support keyboard activation (Enter/Space) for the dropzone to open the file picker.",
       "reqIds": [
         "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-more-cartoon-appropriate-default-gallery-thumbnail-static-image-that-matches-the-new-multi-character-cartoon-style-and-use-it-wherever-the-gallery-currently-falls-back-to-a-generic-default-thumbnail",
-      "title": "Add a more cartoon-appropriate default gallery thumbnail (static image) that matches the new multi-character cartoon style and use it wherever the gallery currently falls back to a generic/default thumbnail.",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-use-english-for-any-new-or-updated-user-facing-text-related-to-video-playback-download-placeholder-status-so-the-ui-messages-are-consistent-and-understandable",
-      "title": "Use English for any new or updated user-facing text related to video playback/download/placeholder status so the UI messages are consistent and understandable.",
-      "reqIds": [
-        "REQ-4"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [
-    {
-      "id": "AR-1",
-      "summary": "Replace invalid 85-byte placeholder MP4 with a real >=1024B MP4 and ensure video blobs are served with correct video/mp4 headers/streaming so in-app playback works",
-      "reqIds": [],
-      "status": "in_progress"
-    },
     {
       "id": "AR-2",
       "summary": "Provide a real, good-looking demo/placeholder MP4 (not tiny/invalid) that is downloadable and also displays correctly in the gallery as the video output until true generation is implemented",
@@ -257,6 +246,12 @@
       "summary": "Interim animation output should support multiple characters (as feasible) within the audio-length-matched horizontal MP4 pipeline (playable in-app, downloadable, shown in gallery)",
       "reqIds": [],
       "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Fix upload UI regression: make the entire drag-and-drop upload box fully clickable/tappable on both mobile and desktop (proper <input type=\"file\"> binding, touch support, and ensure no CSS/z-index overlay blocks clicks)",
+      "reqIds": [],
+      "status": "in_progress"
     }
   ],
   "architecturalNotes": [
@@ -277,7 +272,9 @@
     "User clarified desired output is not a generic loop/placeholder: they want full cartoon animation with scene-based characters/backgrounds and audio-synced acting/lip-sync when character dialogue is present; final MP4 duration must match the uploaded audio length.",
     "User accepted proceeding with the best feasible interim approach (not full AI scene/lip-sync yet): generate a real valid MP4 (not 85B), horizontal, clean animation, duration exactly equals uploaded audio length, and ensure it plays in-app and is downloadable/visible in gallery; keep architecture extensible for later external AI scene/lip-sync rendering integration.",
     "User confirmed interim animation approach details: (1) prioritize as-realistic-as-possible character movement/gestures within feasibility (not true AI scene/lip-sync), (2) audio source will be a single user-uploaded MP3/WAV file, (3) use generic original/royalty-free-looking cartoon characters & backgrounds (inspired-by style, not copied).",
-    "User confirmed to proceed with the best-feasible interim animation approach (not true story understanding / YouTube-level scene generation yet): generate a real horizontal MP4 with duration exactly matching the uploaded audio, clean animation, downloadable and visible in gallery, with multiple characters and as-realistic-as-possible movement plus audio-driven pseudo lip-sync."
+    "Frontend public assets now include a real, valid placeholder MP4 at `frontend/public/assets/placeholders/minimal-placeholder.mp4` for placeholder video creation/playback.",
+    "Frontend public assets now include a generated default gallery thumbnail image at `frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png` for fallback thumbnail display.",
+    "Planned/approved UI patch: update UploadSection so the whole drag-and-drop container reliably triggers the hidden file input on both mobile (touch) and desktop (click), with overlay/z-index safety to prevent blocked pointer events."
   ],
   "knownIssues": [
     "`uploadFile` uses a global `fileId` key; collisions can overwrite existing entries (no uniqueness/ownership checks).",
@@ -285,16 +282,17 @@
     "There appear to be two different `frontend/src/index.css` contents in the provided tree, suggesting a possible merge/duplication issue that could cause styling inconsistencies depending on which file is actually used.",
     "`_caffeineStorageCreateCertificate` in the storage mixin returns a fixed `{method=\"upload\"}` response and does not implement real certificate issuance/verification logic (may be intentional stub).",
     "Regression observed: audio upload can fail with a popup error \"Actor not initialized\" after broader code changes/builds.",
-    "Build/runtime error: placeholder video asset `assets/placeholders/minimal-placeholder.mp4` is invalid/too small (85 bytes). System requires a valid MP4 placeholder of at least 1024 bytes; must replace with a real MP4 file to allow placeholder creation/playback.",
     "Upload can fail with “YHash must be exactly 32 bytes, got 64” / “अपलोड के दौरान अमान्य फ़ाइल हैश का पता चला” especially with ElevenLabs-downloaded MP3s, indicating a hash encoding/normalization mismatch (e.g., 64-char hex vs required 32-byte binary).",
-    "After upload reaches 100% (and/or after “Audio ke sath sink…”), the UI can show “फ़ाइल नहीं मिली”, suggesting the uploaded file record/blob reference is not being persisted or is being looked up under a mismatched fileId/registry key."
+    "After upload reaches 100% (and/or after “Audio ke sath sink…”), the UI can show “फ़ाइल नहीं मिली”, suggesting the uploaded file record/blob reference is not being persisted or is being looked up under a mismatched fileId/registry key.",
+    "Upload UI regression: the drag-and-drop/select-audio area/button is not responding to clicks (file picker does not open), blocking audio upload.",
+    "Upload UI regression details: user is logged in, using Chrome; upload area/button click does nothing (no popup/error) and user reports the clickable area/\"capacity\" seems reduced.",
+    "Upload UI regression also affects mobile: user is logged in, on Chrome mobile at 100% zoom; tapping the entire drag-and-drop upload box does nothing (no file picker, no error), and the clickable area feels reduced."
   ],
   "isFixRequest": true,
-  "imageRequirements": "## Required Images\n- Cartoon forest scene thumbnail with 2–3 original characters visible (cartoon-gallery-thumb.dim_1280x720.png)",
   "generatedImages": [
     {
-      "filename": "cartoon-gallery-thumb.dim_1280x720.png",
-      "description": "Cartoon forest scene thumbnail with 2–3 original characters visible",
+      "filename": "frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png",
+      "description": "Generated default/fallback thumbnail for the video gallery",
       "targetWidth": 1280,
       "targetHeight": 720
     }
@@ -303,6 +301,6 @@
   "projectName": "AutoToon Studio",
   "clarification_mode": "thinking",
   "clarification_rounds": 0,
-  "requiresBackendChanges": true,
+  "requiresBackendChanges": false,
   "requiresFrontendChanges": true
 }

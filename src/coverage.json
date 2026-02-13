@@ -1,71 +1,35 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-03T10:42:40.616Z",
+  "generatedAt": "2026-02-03T11:03:36.941Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 4,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Replace the current invalid/tiny placeholder MP4 with a new valid, good-looking horizontal MP4 asset that features multiple original cartoon characters (2–3+) and visible character motion (e.g., walk/gesture loops) in a simple cartoon forest-style scene (inspired by the uploaded screenshot but not copied). The MP4 must be large enough to pass existing placeholder validation and must play reliably in the in-app player.",
+        "summary": "Update the audio UploadSection drag-and-drop area so the entire dropzone is fully clickable/tappable on both mobile and desktop to open the file picker (not only the \"Select File\" button). Ensure the click/tap triggers the underlying <input type=\"file\"> reliably on mobile Chrome.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/placeholders/minimal-placeholder.mp4",
-          "frontend/src/utils/placeholderVideo.ts"
+          "frontend/src/components/UploadSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/public/assets/placeholders/minimal-placeholder.mp4",
-          "frontend/src/utils/placeholderVideo.ts"
+          "frontend/src/components/UploadSection.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Ensure the gallery and modal video player consistently use the same playable MP4 bytes source (backend-served bytes when available; otherwise the new placeholder MP4) and that the Download action downloads a real playable .mp4 file that also opens in standard phone/desktop gallery players.",
+        "summary": "Improve the upload dropzone hit-area and accessibility: show a clear pointer/interactive affordance when enabled, and support keyboard activation (Enter/Space) for the dropzone to open the file picker.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideoPlayer.tsx",
-          "frontend/src/components/VideoPlayer.tsx",
-          "frontend/src/components/VideoPlayer.tsx"
+          "frontend/src/components/UploadSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideoPlayer.tsx",
-          "frontend/src/components/VideoPlayer.tsx",
-          "frontend/src/components/VideoPlayer.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Add a more cartoon-appropriate default gallery thumbnail (static image) that matches the new multi-character cartoon style and use it wherever the gallery currently falls back to a generic/default thumbnail.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png",
-          "frontend/src/components/VideoGallery.tsx",
-          "frontend/src/components/VideoPlayer.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png",
-          "frontend/src/components/VideoGallery.tsx",
-          "frontend/src/components/VideoPlayer.tsx"
-        ]
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Use English for any new or updated user-facing text related to video playback/download/placeholder status so the UI messages are consistent and understandable.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/VideoPlayer.tsx",
-          "frontend/src/components/UploadSection.tsx",
-          "frontend/src/components/VideoGallery.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/VideoPlayer.tsx",
-          "frontend/src/components/UploadSection.tsx",
-          "frontend/src/components/VideoGallery.tsx"
+          "frontend/src/components/UploadSection.tsx"
         ]
       }
     ]
@@ -75,12 +39,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/cartoon-gallery-thumb.dim_1280x720.png",
-    "frontend/public/assets/placeholders/minimal-placeholder.mp4",
     "frontend/src/components/UploadSection.tsx",
-    "frontend/src/components/VideoGallery.tsx",
-    "frontend/src/components/VideoPlayer.tsx",
-    "frontend/src/utils/placeholderVideo.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

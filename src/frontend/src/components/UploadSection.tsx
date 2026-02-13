@@ -185,6 +185,14 @@ export default function UploadSection() {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (isDisabled) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fileInputRef.current?.click();
+        }
+    };
+
     const isProcessing = currentStep !== 'idle' && currentStep !== 'completed';
     const isDisabled = isProcessing || actorInitializing || !actor;
 
@@ -194,26 +202,37 @@ export default function UploadSection() {
                 <CardTitle className="text-2xl">Upload Audio</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-                <div
-                    className={`relative rounded-lg border-2 border-dashed p-12 text-center transition-colors ${
+                <label
+                    htmlFor="audio-file-input"
+                    className={`relative block rounded-lg border-2 border-dashed p-12 text-center transition-colors ${
                         isDragging
                             ? 'border-primary bg-primary/5'
                             : 'border-muted-foreground/25 hover:border-primary/50'
-                    } ${isDisabled ? 'pointer-events-none opacity-50' : ''}`}
+                    } ${
+                        isDisabled 
+                            ? 'cursor-not-allowed opacity-50' 
+                            : 'cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2'
+                    }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
+                    onKeyDown={handleKeyDown}
+                    tabIndex={isDisabled ? -1 : 0}
+                    role="button"
+                    aria-label="Upload audio file"
+                    aria-disabled={isDisabled}
                 >
                     <input
                         ref={fileInputRef}
+                        id="audio-file-input"
                         type="file"
                         accept="audio/*,.mp3,.wav"
                         onChange={handleFileSelect}
-                        className="hidden"
+                        className="sr-only"
                         disabled={isDisabled}
                     />
 
-                    <div className="flex flex-col items-center space-y-4">
+                    <div className="flex flex-col items-center space-y-4 pointer-events-none">
                         <div className="rounded-full bg-primary/10 p-6">
                             {isProcessing || actorInitializing ? (
                                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -237,15 +256,16 @@ export default function UploadSection() {
 
                         {!isDisabled && (
                             <Button
-                                onClick={() => fileInputRef.current?.click()}
+                                type="button"
                                 size="lg"
-                                className="mt-4"
+                                className="mt-4 pointer-events-none"
+                                tabIndex={-1}
                             >
                                 Select File
                             </Button>
                         )}
                     </div>
-                </div>
+                </label>
 
                 {isProcessing && (
                     <GenerationProgress 
